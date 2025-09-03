@@ -1,50 +1,87 @@
 <!doctype html>
-<article class="card"><h3>Сопровождение сделок</h3><p class="muted">Дью‑дилидженс, протоколы разногласий, чек‑листы, согласование документов.</p></article>
-<article class="card"><h3>Корпоративные вопросы</h3><p class="muted">Учредительные документы, изменения, доверенности, корпоративные договоры.</p></article>
+© <span id="year"></span> Юрист Тимур Данабаев. Все права защищены. Не является публичной офертой и не гарантирует исход дела.
 </div>
-</section>
-
-
-<section id="pricing" class="section">
-<h2>Тарифы</h2>
-<ul class="list">
-<li class="li"><span class="dot"></span><strong>Консультация</strong> — от 10 000 ₸ / 30 мин</li>
-<li class="li"><span class="dot"></span><strong>Договор «под ключ»</strong> — от 35 000 ₸</li>
-<li class="li"><span class="dot"></span><strong>Претензия</strong> — от 25 000 ₸</li>
-<li class="li"><span class="dot"></span><strong>Сопровождение сделки</strong> — по запросу</li>
-</ul>
-</section>
-
-
-<section id="contact" class="section">
-<h2>Контакты</h2>
-<p class="muted">Напишите задачу — предложим формат работы.</p>
-<div class="buttons">
-<a class="btn" href="https://wa.me/77000000000" target="_blank" rel="noopener">WhatsApp</a>
-<a class="btn btn-outline" href="tel:+77770000000">Позвонить</a>
-<a class="btn btn-outline" href="mailto:example@example.com">Email</a>
 </div>
-<form class="contacts" id="form" action="https://formspree.io/f/your-id" method="POST">
-<div class="field"><label>Имя<br><input name="name" required></label></div>
-<div class="field"><label>Контакт<br><input name="contact" required placeholder="email или телефон"></label></div>
-<div class="field span-12"><label>Сообщение<br><textarea name="message" rows="5" required></textarea></label></div>
-<div class="span-12"><button class="btn" type="submit">Отправить</button></div>
-</form>
-</section>
-</main>
-
-
-<footer class="footer">
-<div class="container">© <span id="y"></span> Lawyer‑Service</div>
 </footer>
 
 
 <script>
-document.getElementById('y').textContent = new Date().getFullYear();
-document.getElementById('form').addEventListener('submit', function(e){
-if(this.action.includes('your-id')){e.preventDefault();alert('Замените URL формы на ваш endpoint (Formspree и т.п.).');}
+// Год в футере
+document.getElementById('year').textContent = new Date().getFullYear();
+
+
+// Mobile menu toggle
+document.getElementById('menuBtn').addEventListener('click', () => {
+document.getElementById('mobileMenu').classList.toggle('hidden');
 });
+
+
+// Cookie bar
+const cookieKey = 'cookie.accepted.v1';
+const cookieBar = document.getElementById('cookieBar');
+const accepted = localStorage.getItem(cookieKey);
+if (!accepted) cookieBar.classList.remove('hidden');
+document.getElementById('cookieAccept').onclick = () => { localStorage.setItem(cookieKey, '1'); cookieBar.classList.add('hidden'); };
+document.getElementById('cookieClose').onclick = () => cookieBar.classList.add('hidden');
+
+
+// Lead form -> WhatsApp deep link with fallback to email
+const form = document.getElementById('leadForm');
+const note = document.getElementById('formNote');
+form.addEventListener('submit', (e) => {
+e.preventDefault();
+const fp = new FormData(form);
+// Honeypot check
+if (fp.get('website')) return; // silently drop bots
+
+
+// Required
+const name = (fp.get('name') || '').trim();
+const phone = (fp.get('phone') || '').trim();
+const message = (fp.get('message') || '').trim();
+const agree = document.getElementById('agree').checked;
+if (!name || !phone || !message || !agree) {
+alert('Пожалуйста, заполните обязательные поля и подтвердите согласие.');
+return;
+}
+
+
+const email = (fp.get('email') || '').trim();
+const company = (fp.get('company') || '').trim();
+const city = (fp.get('city') || '').trim();
+const lang = (fp.get('lang') || '').trim();
+const service = (fp.get('service') || '').trim();
+
+
+const text = `Заявка с сайта\nИмя: ${name}\nТелефон: ${phone}\nEmail: ${email}\nКомпания: ${company}\nГород: ${city}\nЯзык: ${lang}\nУслуга: ${service}\n\nСообщение: ${message}`;
+const encoded = encodeURIComponent(text);
+const wa = `https://wa.me/77081940179?text=${encoded}`;
+
+
+// Try open WhatsApp
+window.open(wa, '_blank');
+note.classList.remove('hidden');
+
+
+// Email fallback (composes a draft)
+const mailto = `mailto:Marjan69@mail.ru?subject=${encodeURIComponent('Заявка с сайта')}&body=${encoded}`;
+setTimeout(() => { window.open(mailto); }, 1200);
+});
+
+
+// Simple RU/KZ toggles (заглушка под будущий перевод)
+const setLang = (lang) => {
+document.documentElement.lang = lang === 'KZ' ? 'kk' : 'ru';
+// Здесь можно подключить загрузку перевода и замену текстов.
+document.getElementById('langRU').classList.toggle('underline', lang==='RU');
+document.getElementById('langKZ').classList.toggle('underline', lang==='KZ');
+document.getElementById('langRU2').classList.toggle('underline', lang==='RU');
+document.getElementById('langKZ2').classList.toggle('underline', lang==='KZ');
+};
+document.getElementById('langRU').onclick = () => setLang('RU');
+document.getElementById('langKZ').onclick = () => setLang('KZ');
+document.getElementById('langRU2').onclick = () => setLang('RU');
+document.getElementById('langKZ2').onclick = () => setLang('KZ');
 </script>
 </body>
 </html>
-
