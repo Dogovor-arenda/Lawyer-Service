@@ -1,87 +1,66 @@
 <!doctype html>
-© <span id="year"></span> Юрист Тимур Данабаев. Все права защищены. Не является публичной офертой и не гарантирует исход дела.
-</div>
-</div>
-</footer>
-
-
-<script>
-// Год в футере
-document.getElementById('year').textContent = new Date().getFullYear();
-
-
-// Mobile menu toggle
-document.getElementById('menuBtn').addEventListener('click', () => {
-document.getElementById('mobileMenu').classList.toggle('hidden');
-});
-
-
-// Cookie bar
-const cookieKey = 'cookie.accepted.v1';
-const cookieBar = document.getElementById('cookieBar');
-const accepted = localStorage.getItem(cookieKey);
-if (!accepted) cookieBar.classList.remove('hidden');
-document.getElementById('cookieAccept').onclick = () => { localStorage.setItem(cookieKey, '1'); cookieBar.classList.add('hidden'); };
-document.getElementById('cookieClose').onclick = () => cookieBar.classList.add('hidden');
-
-
-// Lead form -> WhatsApp deep link with fallback to email
-const form = document.getElementById('leadForm');
-const note = document.getElementById('formNote');
-form.addEventListener('submit', (e) => {
-e.preventDefault();
-const fp = new FormData(form);
-// Honeypot check
-if (fp.get('website')) return; // silently drop bots
-
-
-// Required
-const name = (fp.get('name') || '').trim();
-const phone = (fp.get('phone') || '').trim();
-const message = (fp.get('message') || '').trim();
-const agree = document.getElementById('agree').checked;
-if (!name || !phone || !message || !agree) {
-alert('Пожалуйста, заполните обязательные поля и подтвердите согласие.');
-return;
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Юридические услуги в Казахстане — договоры, споры, комплаенс | Юрист Тимур Данабаев</title>
+<meta name="description" content="Юридическая помощь бизнесу и частным клиентам: договоры, споры, недвижимость, трудовое право, проекты с Китаем. Работаем по РК и онлайн." />
+<meta property="og:title" content="Юрист Тимур Данабаев — юридические услуги в Казахстане" />
+<meta property="og:description" content="Контракты, сделки, споры и комплаенс — аккуратно, по срокам и по делу." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ru_KZ" />
+<meta name="format-detection" content="telephone=no" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Баннеры: замените на пути к вашим изображениям */
+.hero-bg { background-image: url('banner-hero.jpg'); }
+.cta-bg { background-image: url('banner-cta.jpg'); }
+.bg-cover-center { background-size: cover; background-position: center; }
+</style>
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@type": ["LegalService", "LocalBusiness"],
+"name": "Юрист Тимур Данабаев",
+"areaServed": "KZ",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Алматы",
+"addressCountry": "KZ"
+},
+"telephone": "+7 708 194 0179",
+"email": "Marjan69@mail.ru",
+"openingHours": "Mo-Fr 09:00-18:00",
+"priceRange": "₸₸"
 }
-
-
-const email = (fp.get('email') || '').trim();
-const company = (fp.get('company') || '').trim();
-const city = (fp.get('city') || '').trim();
-const lang = (fp.get('lang') || '').trim();
-const service = (fp.get('service') || '').trim();
-
-
-const text = `Заявка с сайта\nИмя: ${name}\nТелефон: ${phone}\nEmail: ${email}\nКомпания: ${company}\nГород: ${city}\nЯзык: ${lang}\nУслуга: ${service}\n\nСообщение: ${message}`;
-const encoded = encodeURIComponent(text);
-const wa = `https://wa.me/77081940179?text=${encoded}`;
-
-
-// Try open WhatsApp
-window.open(wa, '_blank');
-note.classList.remove('hidden');
-
-
-// Email fallback (composes a draft)
-const mailto = `mailto:Marjan69@mail.ru?subject=${encodeURIComponent('Заявка с сайта')}&body=${encoded}`;
-setTimeout(() => { window.open(mailto); }, 1200);
-});
-
-
-// Simple RU/KZ toggles (заглушка под будущий перевод)
-const setLang = (lang) => {
-document.documentElement.lang = lang === 'KZ' ? 'kk' : 'ru';
-// Здесь можно подключить загрузку перевода и замену текстов.
-document.getElementById('langRU').classList.toggle('underline', lang==='RU');
-document.getElementById('langKZ').classList.toggle('underline', lang==='KZ');
-document.getElementById('langRU2').classList.toggle('underline', lang==='RU');
-document.getElementById('langKZ2').classList.toggle('underline', lang==='KZ');
-};
-document.getElementById('langRU').onclick = () => setLang('RU');
-document.getElementById('langKZ').onclick = () => setLang('KZ');
-document.getElementById('langRU2').onclick = () => setLang('RU');
-document.getElementById('langKZ2').onclick = () => setLang('KZ');
 </script>
-</body>
+</head>
+<body class="antialiased text-gray-900">
+<!-- Cookie notice -->
+<div id="cookieBar" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] md:w-auto max-w-3xl rounded-xl bg-gray-900 text-white p-4 shadow-2xl">
+<div class="flex flex-col md:flex-row md:items-center gap-3">
+<p class="text-sm leading-snug">Мы используем cookies для работы сайта. Продолжая пользоваться сайтом, Вы соглашаетесь с <a href="#policy" class="underline underline-offset-4">политикой конфиденциальности</a>.</p>
+<div class="flex gap-2 md:ml-auto">
+<button id="cookieAccept" class="px-4 py-2 rounded-lg bg-white text-gray-900 text-sm font-medium">Согласен(а)</button>
+<button id="cookieClose" class="px-3 py-2 rounded-lg bg-gray-700 text-white text-sm">Закрыть</button>
+</div>
+</div>
+</div>
+
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-100">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+<a href="#" class="shrink-0 font-semibold tracking-tight">Юрист Тимур Данабаев</a>
+<nav class="hidden md:flex gap-6 text-sm">
+<a href="#services" class="hover:text-gray-700">Услуги</a>
+<a href="#process" class="hover:text-gray-700">Как работаем</a>
+<a href="#strengths" class="hover:text-gray-700">Сильные стороны</a>
+<a href="#about" class="hover:text-gray-700">О компании</a>
+<a href="#cases" class="hover:text-gray-700">Кейсы</a>
+<a href="#blog" class="hover:text-gray-700">Блог</a>
+<a href="#faq" class="hover:text-gray-700">FAQ</a>
+<a href="#contacts" class="hover:text-gray-700">Контакты</a>
+</nav>
+<div class="hidden md:flex items-center gap-2 ml-auto">
 </html>
